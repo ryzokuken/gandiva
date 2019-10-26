@@ -8,13 +8,13 @@ const [
   count = 200
 ] = process.argv.slice(2);
 
-(async () => {
-  const start = Date.now();
-  for (let i = 0; i < numClients; i++) {
-    await makeClient(data, count);
-  }
-  console.log(Date.now() - start);
-})();
+const clients = [];
+for (let i = 0; i < numClients; i++) {
+  clients.push(makeClient(data, count));
+}
+Promise.all(clients).then(times => {
+  console.log(times);
+});
 
 function makeRequest(client, data) {
   return new Promise(resolve => {
@@ -28,13 +28,14 @@ function makeRequest(client, data) {
 function makeClient(data, count) {
   return new Promise(resolve => {
     const client = new net.Socket();
+    const start = Date.now();
     client.setMaxListeners(count);
     client.connect(port, host, async () => {
       for (let i = 0; i < count; i++) {
         await makeRequest(client, data + i);
       }
       client.destroy();
-      resolve();
+      resolve(Date.now() - start);
     });
   });
 }

@@ -22,8 +22,8 @@ Promise.all(clients).then(times => {
 function makeRequest(client, data) {
   return new Promise(resolve => {
     client.write(data);
-    client.on("data", res => {
-      if (res.toString() === data) resolve();
+    client.once("data", res => {
+      resolve();
     });
   });
 }
@@ -32,7 +32,6 @@ function makeClient(data, count) {
   return new Promise(resolve => {
     const client = new net.Socket();
     const start = Date.now();
-    client.setMaxListeners(count);
     client.connect(port, host, async () => {
       for (let i = 0; i < count; i++) {
         await makeRequest(client, data + i);

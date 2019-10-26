@@ -1,17 +1,31 @@
 import net from "net";
 
-const client = new net.Socket();
-const [host = "0.0.0.0", port = 1337, data = "hello"] = process.argv.slice(2);
+const [
+  host = "0.0.0.0",
+  port = 1337,
+  data = "hello",
+  count = 100
+] = process.argv.slice(2);
 
-client.connect(port, host, () => {
-  client.write(data);
-});
+const requests = [];
 
-client.on("data", data => {
-  console.log("Received: " + data);
-  client.destroy();
-});
+for (let i = 0; i < count; i++) {
+  const req = new Promise((resolve, reject) => {
+    const client = new net.Socket();
+    client.connect(port, host, () => {
+      client.write(data);
+    });
+    client.on("data", () => {
+      client.destroy();
+      resolve();
+    });
+    setTimeout(() => {
+      reject("request timed out");
+    }, 1000);
+  });
+  requests.push(req);
+}
 
-client.on("close", () => {
-  console.log("Connection closed");
+Promise.all(requests).then(() => {
+  console.log("DONE");
 });

@@ -34,7 +34,7 @@ function makeClient(data, count) {
     const start = Date.now();
     client.connect(port, host, async () => {
       for (let i = 0; i < count; i++) {
-        await makeRequest(client, data + i);
+        await makeRequest(client, data);
       }
       client.destroy();
       resolve(Date.now() - start);

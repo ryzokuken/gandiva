@@ -13,7 +13,10 @@ for (let i = 0; i < numClients; i++) {
   clients.push(makeClient(data, count));
 }
 Promise.all(clients).then(times => {
-  console.log(times);
+  const [mean, min, max] = processValues(times);
+  console.log(`Min time: ${min}`);
+  console.log(`Mean time: ${mean}`);
+  console.log(`Max time: ${max}`);
 });
 
 function makeRequest(client, data) {
@@ -38,4 +41,17 @@ function makeClient(data, count) {
       resolve(Date.now() - start);
     });
   });
+}
+
+function processValues(values) {
+  const len = values.length;
+  if (len === 0) return [];
+  let [sum, min, max] = new Array(3).fill(values[0]);
+  for (let i = 1; i < len; i++) {
+    const val = values[i];
+    sum += val;
+    if (val < min) min = val;
+    if (val > max) max = val;
+  }
+  return [sum / len, min, max];
 }

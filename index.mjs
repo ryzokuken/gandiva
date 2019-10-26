@@ -8,6 +8,7 @@ const [
 ] = process.argv.slice(2);
 
 const requests = [];
+const start = Date.now();
 
 for (let i = 0; i < count; i++) {
   const req = new Promise((resolve, reject) => {
@@ -27,5 +28,5 @@ for (let i = 0; i < count; i++) {
 }
 
 Promise.all(requests).then(() => {
-  console.log("DONE");
+  console.log(Date.now() - start);
 });

@@ -1,0 +1,19 @@
+{
+  "name": "gandiva",
+  "version": "0.1.0",
+  "description": "A (fast) TCP benchmarking tool written in Node.js",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryzokuken/gandiva.git"
+  },
+  "author": "Ujjwal Sharma <usharma@igalia.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryzokuken/gandiva/issues"
+  },
+  "homepage": "https://github.com/ryzokuken/gandiva#readme"
+}

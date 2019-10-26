@@ -27,6 +27,10 @@ for (let i = 0; i < count; i++) {
   requests.push(req);
 }
 
-Promise.all(requests).then(() => {
-  console.log(Date.now() - start);
-});
+Promise.all(requests)
+  .then(() => {
+    console.log(Date.now() - start);
+  })
+  .catch(e => {
+    console.error(e);
+  });

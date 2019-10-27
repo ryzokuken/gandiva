@@ -4,8 +4,8 @@ const [
   host = "0.0.0.0",
   port = 1337,
   payload = "hello",
-  numClients = 5,
-  count = 200
+  numClients = 10,
+  count = 500
 ] = process.argv.slice(2);
 
 const clients = [];
@@ -17,6 +17,7 @@ Promise.all(clients).then(times => {
   console.log(`Min time: ${min}`);
   console.log(`Mean time: ${mean}`);
   console.log(`Max time: ${max}`);
+  console.log(`Mean time per request: ${mean / count}`);
 });
 
 function makeRequest(client, data) {

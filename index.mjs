@@ -3,14 +3,14 @@ import net from "net";
 const [
   host = "0.0.0.0",
   port = 1337,
-  data = "hello",
+  payload = "hello",
   numClients = 5,
   count = 200
 ] = process.argv.slice(2);
 
 const clients = [];
 for (let i = 0; i < numClients; i++) {
-  clients.push(makeClient(data, count));
+  clients.push(makeClient(payload, count));
 }
 Promise.all(clients).then(times => {
   const [mean, min, max] = processValues(times);
@@ -22,19 +22,19 @@ Promise.all(clients).then(times => {
 function makeRequest(client, data) {
   return new Promise(resolve => {
     client.write(data);
-    client.once("data", res => {
+    client.once("data", () => {
       resolve();
     });
   });
 }
 
-function makeClient(data, count) {
+function makeClient(payload, count) {
   return new Promise(resolve => {
     const client = new net.Socket();
     const start = Date.now();
     client.connect(port, host, async () => {
       for (let i = 0; i < count; i++) {
-        await makeRequest(client, data);
+        await makeRequest(client, payload);
       }
       client.destroy();
       resolve(Date.now() - start);
